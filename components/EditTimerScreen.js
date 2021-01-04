@@ -3,22 +3,20 @@ import { StyleSheet, ScrollView, ActivityIndicator, View, TextInput } from 'reac
 import { Button } from 'react-native-elements';
 import firebase from '../Firebase';
 
-
 class EditTimerScreen extends Component {
     static navigationOptions = {
         title: 'Edit Timer',
     };
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             key: '',
-            isLoading: true,
-            title: '',
-            description: '',
-            author: ''
+            name: '',
+            task: '',
+            time: 0,
+            isLoading: false,
         };
     }
-
     componentDidMount() {
         const { navigation } = this.props;
         const ref = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey')));
@@ -28,6 +26,8 @@ class EditTimerScreen extends Component {
                 this.setState({
                     key: doc.id,
                     name: timer.name,
+                    task: timer.task,
+                    time: timer.time,
                     isLoading: false
                 });
             } else {
@@ -49,11 +49,15 @@ class EditTimerScreen extends Component {
         const { navigation } = this.props;
         const updateRef = firebase.firestore().collection('timers').doc(this.state.key);
         updateRef.set({
-            name: this.state.name
+            name: this.state.name,
+            task: this.state.task,
+            time: this.state.time,
         }).then((docRef) => {
             this.setState({
                 key: '',
                 name: '',
+                task: '',
+                time: 0,
                 isLoading: false,
             });
             this.props.navigation.navigate('Timer');
@@ -65,10 +69,6 @@ class EditTimerScreen extends Component {
                 });
             });
     }
-
-
-
-
     render() {
         if(this.state.isLoading){
             return(
@@ -86,7 +86,22 @@ class EditTimerScreen extends Component {
                         onChangeText={(text) => this.updateTextInput(text, 'name')}
                     />
                 </View>
-
+                <View style={styles.subContainer}>
+                    <TextInput
+                        multiline={true}
+                        numberOfLines={4}
+                        placeholder={'Task'}
+                        value={this.state.task}
+                        onChangeText={(text) => this.updateTextInput(text, 'task')}
+                    />
+                </View>
+                <View style={styles.subContainer}>
+                    <TextInput
+                        placeholder={'Time'}
+                        value={this.state.time}
+                        onChangeText={(text) => this.updateTextInput(text, 'time')}
+                    />
+                </View>
                 <View style={styles.button}>
                     <Button
                         large
@@ -97,8 +112,6 @@ class EditTimerScreen extends Component {
             </ScrollView>
         );
     }
-
-
 }
 
 const styles = StyleSheet.create({
