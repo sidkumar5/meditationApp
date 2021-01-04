@@ -1,8 +1,8 @@
-//rohil test
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View, Text } from 'react-native';
 import {  ListItem, Button, Icon, Avatar } from 'react-native-elements';
 import firebase from '../Firebase';
+//sid kumar
 
 class TimerScreen extends Component {
 
@@ -67,37 +67,37 @@ class TimerScreen extends Component {
         }
         return (
             <ScrollView style={styles.container}>
-                    {
-                        this.state.timers.map((item, i) => (
-                            <ListItem
-                                key={i}
-                                bottomDivider
-                                onPress={() => {
-                                    this.props.navigation.navigate('TimerDetails', {
-                                        timerkey: `${JSON.stringify(item.key)}`,
-                                        timerName: `${JSON.stringify(item.name)}`,
-                                    });
-                                }}
-                            >
-                                <Avatar title="T"  rounded source={{uri: item.image}} />
-                                <ListItem.Content>
-                                    <ListItem.Title >{item.name}</ListItem.Title>
-                                </ListItem.Content>
-                                <ListItem.Chevron />
+                {
+                    this.state.timers.map((item, i) => (
+                        <ListItem
+                            key={i}
+                            bottomDivider
+                            onPress={() => {
+                                this.props.navigation.navigate('TimerDetails', {
+                                    timerkey: `${JSON.stringify(item.key)}`,
+                                    timerName: `${JSON.stringify(item.name)}`,
+                                });
+                            }}
+                        >
+                            <Avatar source={{uri: item.image}} />
+                            <ListItem.Content>
+                                <ListItem.Title >{item.name}</ListItem.Title>
+                            </ListItem.Content>
+                            <ListItem.Chevron />
 
-                            </ListItem>
+                        </ListItem>
 
-                           // <ListItem key={i} bottomDivider >
-                           //     <ListItem.Content>
-                           //         <ListItem.Title >{item.name}</ListItem.Title>
+                        // <ListItem key={i} bottomDivider >
+                        //     <ListItem.Content>
+                        //         <ListItem.Title >{item.name}</ListItem.Title>
 //
-                            //    </ListItem.Content>
+                        //    </ListItem.Content>
 
-                          //  </ListItem>
+                        //  </ListItem>
 
 
-                        ))
-                    }
+                    ))
+                }
 
             </ScrollView>
         );
