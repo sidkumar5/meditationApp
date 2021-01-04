@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, TextInput , StatusBar, Image, Text, Dimensions} from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator, View, TextInput , StatusBar, Image, Text} from 'react-native';
 import { Button } from 'react-native-elements';
 import firebase from '../Firebase';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import uuid from 'uuid';
+import moment from "moment"
 
 class AddTimerScreen extends Component {
     static navigationOptions = {
@@ -83,7 +84,7 @@ class AddTimerScreen extends Component {
             <View
                 style={{
                     marginTop: 30,
-                    width: 150,
+                    width: 50,
                     borderRadius: 3,
                     elevation: 2,
                 }}>
@@ -97,7 +98,7 @@ class AddTimerScreen extends Component {
                         shadowRadius: 5,
                         overflow: 'hidden',
                     }}>
-                    <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
+                    <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />
                 </View>
 
             </View>
@@ -172,51 +173,46 @@ class AddTimerScreen extends Component {
                         onChangeText={(text) => this.updateTextInput(text, 'name')}
                     />
                 </View>
+                <View >
 
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+
+
+
                     {this._maybeRenderImage()}
                     {this._maybeRenderUploadingOverlay()}
-                </View>
-                <View style={styles.containerTest}>
-                    <View style={styles.buttonContainer}>
-                        <Button style={styles.button}
-                                onPress={this._pickImage}
-                                title="Pick from gallery"
-                        />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button style={styles.button}
-                                onPress={this._takePhoto} title="Take photo"
-                        />
-                    </View>
-                </View>
-                <View style={{alignItems: 'center'}}>
-                    <Button style={{width: Dimensions.get('window').width * .8}}
-                            title='Save'
-                            onPress={() => this.saveTimer()} />
-
-
 
                     <StatusBar barStyle="default" />
                 </View>
 
 
+                <View style={styles.button}>
+                    <View style={{flex:1 }} >
+                    <Button
+                        onPress={this._pickImage}
+                        title="Pick image"
+                    />
+                    </View>
+
+                    <View style={{flex:1 , marginLeft:10}} >
+                    <Button onPress={this._takePhoto} title="Take photo" />
+                    </View>
 
 
-
+                </View>
+                <View style={{flex:1 , marginTop:10}} >
+                    <Button
+                        large
+                        leftIcon={{name: 'save'}}
+                        title='Save'
+                        onPress={() => this.saveTimer()} />
+                </View>
             </ScrollView>
         );
     }
 
 }
 
-
-
 const styles = StyleSheet.create({
-    button: {
-        width: Dimensions.get('window').width * .45,
-
-    },
     container: {
         flex: 1,
         padding: 20
@@ -237,23 +233,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-
-
-    containerTest: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-
-    },
-    buttonContainer: {
-        textAlign: 'justify',
-        alignItems: 'center',
-        marginLeft: 10,
-
-
-    }
+    button: {
+        marginTop: 10,
+        flexDirection: 'row' }
 })
 
 async function uploadImageAsync(uri) {
@@ -276,7 +258,7 @@ async function uploadImageAsync(uri) {
     const ref = firebase
         .storage()
         .ref()
-        .child('taskimage1.jpg');
+        .child(Date.now()+'taskimage');
     console.log("in uploadimage ",ref);
     const snapshot = await ref.put(blob);
 
@@ -288,5 +270,3 @@ async function uploadImageAsync(uri) {
 }
 
 export default AddTimerScreen;
-
-

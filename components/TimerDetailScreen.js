@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {StyleSheet, ScrollView, ActivityIndicator, View, Dimensions} from 'react-native';
-import {ListItem, Text, Card, Button, Icon, Avatar} from 'react-native-elements';
+import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
+import {  ListItem, Text, Card, Button , Icon, Avatar} from 'react-native-elements';
 import firebase from '../Firebase';
 
 class TimerDetailScreen extends Component {
@@ -61,14 +61,18 @@ class TimerDetailScreen extends Component {
                 image
             });
         });
+        console.log("Setting state");
+        console.log(this.state);
         tasks.sort((a, b) => (Number(a.sequenceNumber) > Number(b.sequenceNumber)) ? 1 : -1)
         this.setState({
             tasks : tasks
         });
+        console.log("After setting the state");
+        console.log(tasks.length);
+        console.log(tasks[0]);
 
 
     }
-
 
 
 
@@ -116,14 +120,14 @@ class TimerDetailScreen extends Component {
                                     bottomDivider
                                     onPress={() => {
                                         console.log("pressed on details");
-                                        this.props.navigation.navigate('EditTaskScreen', {
+                                        this.props.navigation.navigate('EditTask', {
                                             taskkey: `${JSON.stringify(item.key)}`,
                                             timerkey: `${JSON.stringify(this.state.timerkey)}`,
                                         });
                                     }}
 
                                 >
-                                    <Avatar source={{uri: item.taskImage}} />
+                                    <Avatar rounded title="T" source={{uri: item.image}} />
                                     <ListItem.Content>
                                         <ListItem.Title >{item.sequenceNumber}  {item.taskName}</ListItem.Title>
                                         <ListItem.Subtitle >{item.timeSeconds}  Seconds</ListItem.Subtitle>
@@ -144,10 +148,14 @@ class TimerDetailScreen extends Component {
                         }
 
                     </View>
-                    <View style={styles.containerTest}>
-                    <View style={styles.buttonContainer}>
-                        <Button styles={styles.button}
-                            large
+                    <View style={styles.detailButton}>
+                        <View style={{flex:1 , marginLeft:10}} >
+                        <Button
+                            titleStyle={{
+                                color: "white",
+                                fontSize: 10,
+                            }}
+                            small
                             backgroundColor={'#CCCCCC'}
                             leftIcon={{name: 'edit'}}
                             title='Run Timer'
@@ -156,10 +164,14 @@ class TimerDetailScreen extends Component {
                                     timerkey: `${JSON.stringify(this.state.key)}`,
                                 });
                             }} />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button styles={styles.button}
-                            large
+                        </View>
+                        <View style={{flex:1 , marginLeft:10}} >
+                        <Button
+                            titleStyle={{
+                                color: "white",
+                                fontSize: 10,
+                            }}
+                            small
                             backgroundColor={'#CCCCCC'}
                             leftIcon={{name: 'edit'}}
                             title='Add Task'
@@ -168,10 +180,14 @@ class TimerDetailScreen extends Component {
                                     timerkey: `${JSON.stringify(this.state.timerkey)}`,
                                 });
                             }} />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button styles={styles.button}
-                            large
+                        </View>
+                        <View style={{flex:1 , marginLeft:10}} >
+                        <Button
+                            titleStyle={{
+                                color: "white",
+                                fontSize: 10,
+                            }}
+                            small
                             backgroundColor={'#CCCCCC'}
                             leftIcon={{name: 'edit'}}
                             title='Edit Timer'
@@ -180,17 +196,22 @@ class TimerDetailScreen extends Component {
                                     timerkey: `${JSON.stringify(this.state.key)}`,
                                 });
                             }} />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button styles={styles.button}
-                            large
+                        </View>
+                        <View style={{flex:1 , marginLeft:10}} >
+                        <Button
+                            titleStyle={{
+                                color: "white",
+                                fontSize: 10,
+                            }}
+                            small
                             backgroundColor={'#999999'}
                             color={'#FFFFFF'}
                             leftIcon={{name: 'delete'}}
-                            title='Delete Timer'
+                            title='Delete'
                             onPress={() => this.deleteTimer(this.state.key)} />
+                        </View>
                     </View>
-                    </View>
+
                 </Card>
             </ScrollView>
         );
@@ -220,29 +241,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     detailButton: {
-        marginTop: 10
-    },
-    containerTest: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        //width: Dimensions.get('window').width * .75,
-        paddingBottom: 10
-    },
-    buttonContainer: {
-        flex: 1,
-        textAlign: 'justify',
-        alignItems: 'center',
-        //width: Dimensions.get('window').width * .60
-
-
-    },
-    button: {
-        width: Dimensions.get('window').width * 2,
-    }
+        marginTop: 10,
+        flexDirection: 'row' }
 })
 
 export default TimerDetailScreen;
-

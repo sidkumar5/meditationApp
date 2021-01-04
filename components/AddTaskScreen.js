@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    ScrollView,
-    ActivityIndicator,
-    View,
-    TextInput,
-    StatusBar,
-    Text,
-    Image,
-    Dimensions
-} from 'react-native';
-import {Button, ButtonGroup} from 'react-native-elements';
+import { StyleSheet, ScrollView, ActivityIndicator, View, TextInput, StatusBar, Image, Text } from 'react-native';
+import { Button } from 'react-native-elements';
 import firebase from '../Firebase';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import moment from "moment"
 
 class AddTaskScreen extends Component {
     static navigationOptions = {
@@ -23,13 +14,12 @@ class AddTaskScreen extends Component {
         super(props);
         const { navigation } = this.props;
         this.ref = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks');
-
         this.state = {
             taskName: '',
-            timeSeconds: 0,
-            taskImage: '',
-            sequenceNumber: 0,
+            timeSeconds: '',
+            sequenceNumber: '',
             isLoading: false,
+            image: '',
         };
     }
     updateTextInput = (text, field) => {
@@ -38,21 +28,23 @@ class AddTaskScreen extends Component {
         this.setState(state);
     }
 
-    saveTask() {
+    saveTimer() {
         this.setState({
             isLoading: true,
         });
-        this.ref.add({
+        const newTask = this.ref.add({
             taskName: this.state.taskName,
             timeSeconds: this.state.timeSeconds,
             sequenceNumber: Number(this.state.sequenceNumber),
-            taskImage: this.state.taskImage,
+            image: this.state.image,
         }).then((docRef) => {
+
             this.setState({
                 taskName: '',
-                timeSeconds: 0,
-                sequenceNumber: 0,
+                timeSeconds: '',
+                sequenceNumber: '',
                 isLoading: false,
+                image: '',
             });
             this.props.navigation.goBack();
         })
@@ -83,9 +75,9 @@ class AddTaskScreen extends Component {
     };
 
     _maybeRenderImage = () => {
-        let { taskImage } = this.state;
-        console.log("uploaded ",this.state.taskImage);
-        if (!taskImage) {
+        let { image } = this.state;
+        console.log("uploaded ",this.state.image);
+        if (!image) {
             return;
         }
 
@@ -93,7 +85,7 @@ class AddTaskScreen extends Component {
             <View
                 style={{
                     marginTop: 30,
-                    width: 250,
+                    width: 100,
                     borderRadius: 3,
                     elevation: 2,
                 }}>
@@ -107,24 +99,11 @@ class AddTaskScreen extends Component {
                         shadowRadius: 5,
                         overflow: 'hidden',
                     }}>
-                    <Image source={{ uri: taskImage }} style={{ width: 250, height: 250 }} />
+                    <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
                 </View>
 
             </View>
         );
-    };
-
-    _share = () => {
-        Share.share({
-            message: this.state.taskImage,
-            title: 'Check out this photo',
-            url: this.state.taskImage,
-        });
-    };
-
-    _copyToClipboard = () => {
-        Clipboard.setString(this.state.taskImage);
-        alert('Copied image URL to clipboard');
     };
 
     _takePhoto = async () => {
@@ -152,7 +131,7 @@ class AddTaskScreen extends Component {
 
             if (!pickerResult.cancelled) {
                 const uploadUrl = await uploadImageAsync(pickerResult.uri);
-                this.setState({ taskImage: uploadUrl });
+                this.setState({ image: uploadUrl });
             }
         } catch (e) {
             console.log(e);
@@ -175,71 +154,58 @@ class AddTaskScreen extends Component {
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
                     <TextInput
-                        placeholder={'Sequence Number'}
+                        placeholder={'Sequence'}
                         value={this.state.sequenceNumber}
-                        keyboardType={'numeric'}
-                        onChange={(number) => this.updateTextInput(number, 'sequenceNumber')}
+                        onChangeText={(text) => this.updateTextInput(text, 'sequenceNumber')}
                     />
-                </View>
-
-                <View style={styles.subContainer}>
                     <TextInput
-                        placeholder={'Task Name'}
+                        placeholder={'Task'}
                         value={this.state.taskName}
                         onChangeText={(text) => this.updateTextInput(text, 'taskName')}
                     />
-                </View>
-                <View style={styles.subContainer}>
                     <TextInput
-                        multiline={true}
-                        numberOfLines={4}
-                        placeholder={'Time'}
+                        placeholder={'Time in seconds'}
                         value={this.state.timeSeconds}
-                        keyboardType={'numeric'}
                         onChangeText={(text) => this.updateTextInput(text, 'timeSeconds')}
                     />
+
                 </View>
 
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <View >
+
                     {this._maybeRenderImage()}
                     {this._maybeRenderUploadingOverlay()}
-                </View>
-
-                <View style={styles.containerTest}>
-                <View style={styles.buttonContainer}>
-                        <Button style = {styles.button}
-                                onPress={this._pickImage}
-                                title="Pick Image"
-                        />
-                </View>
-                <View style={styles.buttonContainer}>
-                    <Button style = {styles.button} onPress={this._takePhoto} title="Take a photo" />
 
                     <StatusBar barStyle="default" />
                 </View>
 
+
+
+                <View style={styles.button}>
+                    <View style={{flex:1 }} >
+                        <Button
+                            onPress={this._pickImage}
+                            title="Pick image"
+                        />
+                    </View>
+
+                    <View style={{flex:1 , marginLeft:10}} >
+                        <Button onPress={this._takePhoto} title="Take photo" />
+                    </View>
+
+
                 </View>
-                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-
-
-
-
-                <View style={{alignItems: 'center'}}>
-                    <Button style = {{width: Dimensions.get('window').width * .8}}
+                <View style={{flex:1 , marginTop:10}} >
+                    <Button
                         large
-                        leftIcon={{name: 'add'}}
-                        title='Add'
-                        onPress={() => this.saveTask()} />
-                    <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+                        leftIcon={{name: 'save'}}
+                        title='Save'
+                        onPress={() => this.saveTimer()} />
                 </View>
-
             </ScrollView>
         );
     }
-
-
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -262,25 +228,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    containerTest: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-
-    },
-    buttonContainer: {
-        //justifyContent: 'space-evenly',
-        marginLeft: 10,
-        textAlign: 'justify',
-        alignItems: 'center',
-    },
     button: {
-        width: Dimensions.get('window').width * .45,
-
-    },
-
+        marginTop: 10,
+        flexDirection: 'row' }
 })
 
 async function uploadImageAsync(uri) {
@@ -303,7 +253,7 @@ async function uploadImageAsync(uri) {
     const ref = firebase
         .storage()
         .ref()
-        .child('taskimage1.jpg');
+        .child(Date.now()+'taskimage');
     console.log("in uploadimage ",ref);
     const snapshot = await ref.put(blob);
 
@@ -313,5 +263,6 @@ async function uploadImageAsync(uri) {
 
     return await snapshot.ref.getDownloadURL();
 }
+
 
 export default AddTaskScreen;

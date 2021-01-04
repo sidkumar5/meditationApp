@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import {StyleSheet, ScrollView, ActivityIndicator, View, FlatList, TextInput, Dimensions} from 'react-native';
+import {StyleSheet, ScrollView, ActivityIndicator, View, FlatList, TextInput} from 'react-native';
 import {  ListItem, Text, Card, Button } from 'react-native-elements';
 import firebase from '../Firebase';
-//poop
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import moment from "moment"
 
-class TimerDetailTasksScreen extends Component {
+
+class EditTaskScreen extends Component {
     static navigationOptions = {
-        title: 'Timer Tasks',
+        title: 'Edit Task',
     };
 
     constructor(props) {
@@ -25,7 +28,10 @@ class TimerDetailTasksScreen extends Component {
         const tasks = [];
         const { navigation } = this.props;
         querySnapshot.forEach((doc) => {
-            const { sequenceNumber, taskName, timeSeconds } = doc.data();
+            const { taskName, timeSeconds, sequenceNumber, image } = doc.data();
+            console.log("Tasks data")
+            console.log(doc.id);
+            console.log(JSON.parse(navigation.getParam('taskkey')));
             if (JSON.parse(navigation.getParam('taskkey')) == doc.id) {
                 console.log("Identified task");
                 const task = doc.data();
@@ -35,6 +41,7 @@ class TimerDetailTasksScreen extends Component {
                     taskName: task.taskName,
                     timeSeconds: task.timeSeconds,
                     sequenceNumber: task.sequenceNumber,
+                    image: task.image,
                 });
             }
             tasks.push({
@@ -43,15 +50,24 @@ class TimerDetailTasksScreen extends Component {
                 taskName,
                 timeSeconds,
                 sequenceNumber,
+                image
             });
         });
+        console.log("Setting state");
+        console.log(this.state);
         this.setState({
             tasks : tasks,
             isLoading: false,
         });
+        console.log("After setting the state");
+        console.log(tasks.length);
+        console.log(tasks[0]);
+
+
     }
 
     componentDidMount() {
+
         this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
     }
 
@@ -60,18 +76,21 @@ class TimerDetailTasksScreen extends Component {
         const state = this.state
         state[field] = text;
         this.setState(state);
+        console.log("setting field",text,field);
     }
 
     updateTimerTask() {
+
         this.setState({
             isLoading: true,
         });
         const { navigation } = this.props;
+        console.log("updating field ",this.state.taskName);
         const updateRef = firebase.firestore().collection('timers').doc(this.state.key).collection('tasks').doc(JSON.parse(navigation.getParam('taskkey')));
         updateRef.set({
             taskName: this.state.taskName,
             timeSeconds: this.state.timeSeconds,
-            sequenceNumber: this.state.sequenceNumber,
+            sequenceNumber: this.state.sequenceNumber
         }).then((docRef) => {
             console.log("null ref");
             this.setState({
@@ -79,8 +98,7 @@ class TimerDetailTasksScreen extends Component {
                 taskName: '',
                 isLoading: false,
             });
-            this.props.navigation.navigate('TimerDetails');
-            this.props.navigation.navigate('TimerDetails');
+            this.props.navigation.goBack();
         })
             .catch((error) => {
                 console.error("Error adding document: ", error);
@@ -90,24 +108,7 @@ class TimerDetailTasksScreen extends Component {
             });
     }
 
-    deleteTask(key) {
-        const { navigation } = this.props;
-        this.setState({
-            isLoading: true
-        });
-        const updateRef = firebase.firestore().collection('timers').doc(this.state.key).collection('tasks').doc(JSON.parse(navigation.getParam('taskkey')));
-        updateRef.delete().then(() => {
-            this.setState({
-                isLoading: false
-            });
-            navigation.navigate('TimerDetails');
-        }).catch((error) => {
-            console.error("Error removing document: ", error);
-            this.setState({
-                isLoading: false
-            });
-        });
-    }
+
 
 
     render() {
@@ -121,54 +122,32 @@ class TimerDetailTasksScreen extends Component {
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
-                    <TextInput textAlign={'center'}
-                        placeholder={this.state.sequenceNumber}
+                    <TextInput
+                        placeholder={'Sequence'}
                         value={this.state.sequenceNumber}
-                        keyboardType={'numeric'}
                         onChangeText={(text) => this.updateTextInput(text, 'sequenceNumber')}
-                    />
-                </View>
-
-                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-
-                <View style={styles.subContainer}>
-                    <TextInput textAlign={'center'}
+                    keyboardType={'numeric'}
+                />
+                    <TextInput
                         placeholder={'Task'}
                         value={this.state.taskName}
                         onChangeText={(text) => this.updateTextInput(text, 'taskName')}
                     />
-                </View>
-
-                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-
-                <View style={styles.subContainer}>
-                    <TextInput textAlign={'center'}
+                    <TextInput
                         placeholder={'Time'}
                         value={this.state.timeSeconds}
-                        keyboardType={'numeric'}
                         onChangeText={(text) => this.updateTextInput(text, 'timeSeconds')}
                     />
-            </View>
-                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-            <View style = {styles.containerTest}>
-                <View style={styles.buttonContainer}>
-                    <Button style = {styles.button}
+
+                </View>
+
+                <View style={styles.button}>
+                    <Button
                         large
                         leftIcon={{name: 'update'}}
                         title='Update'
                         onPress={() => this.updateTimerTask()} />
-
                 </View>
-                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </Text>
-
-                <View style={styles.buttonContainer}>
-                    <Button style = {styles.button}
-                        large
-                        leftIcon={{name: 'delete'}}
-                        title='Delete Task'
-                        onPress={() => this.deleteTask(this.state.key)} />
-                </View>
-            </View>
             </ScrollView>
         );
     }
@@ -177,23 +156,15 @@ class TimerDetailTasksScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-
-
     container: {
         flex: 1,
         padding: 20
     },
     subContainer: {
-        flex:1,
-        margin: 5,
+        flex: 1,
         paddingBottom: 20,
         borderBottomWidth: 2,
         borderBottomColor: '#CCCCCC',
-        borderWidth: 2,
-        borderColor: '#000000',
-        borderRadius: 20 ,
-        textAlignVertical: 'auto',
-        alignItems: 'center'
     },
     activity: {
         position: 'absolute',
@@ -205,30 +176,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     detailButton: {
-        marginTop: 20,
-        alignItems: 'center'
-    },
-
-    containerTest: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-
-    },
-    buttonContainer: {
-        //justifyContent: 'space-evenly',
-        marginLeft: 5,
-        textAlign: 'justify',
-        alignItems: 'center',
-    },
-    button: {
-        width: Dimensions.get('window').width * .40,
-
-    },
+        marginTop: 10
+    }
 })
 
-export default TimerDetailTasksScreen;
-
-
+export default EditTaskScreen;
