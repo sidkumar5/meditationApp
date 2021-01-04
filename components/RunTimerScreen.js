@@ -1,12 +1,10 @@
-// Commit
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity } from 'react-native';
 import {  ListItem, Text, Card, Button } from 'react-native-elements';
 import firebase from '../Firebase';
 import moment from "moment"
 import { Audio } from 'expo-av';
-//poop
-
+//sid kumar
 
 class RunTimerScreen extends Component {
     static navigationOptions = {
@@ -55,7 +53,8 @@ class RunTimerScreen extends Component {
             shouldPlay: false,
         };
 
-        this.sound.loadAsync(require('../assets/bell.mp3'), status, false);
+        this.sound.loadAsync(require('../assets/serious-strike-533.mp3'), status, false);
+        //this.sound.loadAsync(require('../assets/bell.mp3'), status, false);
 
     }
 
@@ -109,35 +108,35 @@ class RunTimerScreen extends Component {
 
             if(eventDate <=0){
                 clearInterval(this.state.timerF )
-                this.playTone()
                 this.state.currentTask ++;
                 if (this.state.currentTask < this.state.tasks.length) {
                     this.state.eventDate = moment.duration().add({days:0,hours:0,minutes:0,seconds:this.state.tasks[this.state.currentTask].timeSeconds});
                     this.state.currentTaskName = this.state.tasks[this.state.currentTask].taskName;
                     this.startTimer()
                 }
+                this.playTone()
             }else {
                 if (this.state.sessionInProgress) {
-                eventDate = eventDate.subtract(1,"s")
-                const days = eventDate.days()
-                const hours = eventDate.hours()
-                const mins = eventDate.minutes()
-                const secs = eventDate.seconds()
+                    eventDate = eventDate.subtract(1,"s")
+                    const days = eventDate.days()
+                    const hours = eventDate.hours()
+                    const mins = eventDate.minutes()
+                    const secs = eventDate.seconds()
 
-                this.setState({
-                    days,
-                    hours,
-                    mins,
-                    secs,
-                    eventDate
-                })
-            }
+                    this.setState({
+                        days,
+                        hours,
+                        mins,
+                        secs,
+                        eventDate
+                    })
+                }
             }
         },1000)
 
     }
     beginSession = () => {
-
+        //this.playTone()
 
 
         if (!this.state.playing ) {
@@ -145,10 +144,8 @@ class RunTimerScreen extends Component {
             this.state.currentTaskName = this.state.tasks[0].taskName;
             this.state.playing = true;
             this.startTimer()
-            this.playTone()
         } else {
             this.startTimer()
-
         }
 
         this.setState({
