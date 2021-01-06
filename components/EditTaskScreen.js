@@ -287,8 +287,8 @@ class EditTaskScreen extends Component {
                         placeholder={'Sequence'}
                         value={this.state.sequenceNumber}
                         onChangeText={(text) => this.updateTextInput(text, 'sequenceNumber')}
-                    keyboardType={'numeric'}
-                />
+                        keyboardType={'numeric'}
+                    />
                     <TextInput
                         placeholder={'Task'}
                         value={this.state.taskName}
