@@ -149,6 +149,7 @@ class RunTimerScreen extends Component {
             this.state.currentTaskName = this.state.tasks[0].taskName;
             this.state.playing = true;
             this.startTimer()
+            this.playTone()
         } else {
             this.startTimer()
         }
