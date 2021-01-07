@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, ScrollView, ActivityIndicator, View, FlatList, TextInput} from 'react-native';
+import {StyleSheet, ScrollView, ActivityIndicator, View, FlatList, TextInput, Dimensions} from 'react-native';
 import {  ListItem, Text, Card, Button } from 'react-native-elements';
 import firebase from '../Firebase';
 import * as ImagePicker from 'expo-image-picker';
@@ -108,6 +108,25 @@ class EditTaskScreen extends Component {
             });
     }
 
+    deleteTask(key) {
+        const { navigation } = this.props;
+        this.setState({
+            isLoading: true
+        });
+        const updateRef = firebase.firestore().collection('timers').doc(this.state.key).collection('tasks').doc(JSON.parse(navigation.getParam('taskkey')));
+        updateRef.delete().then(() => {
+            this.setState({
+                isLoading: false
+            });
+            navigation.navigate('TimerDetails');
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+            this.setState({
+                isLoading: false
+            });
+        });
+    }
+
 
 
 
@@ -122,31 +141,53 @@ class EditTaskScreen extends Component {
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
-                    <TextInput
-                        placeholder={'Sequence'}
+                    <TextInput textAlign={'center'}
+                        placeholder={"Sequence"}
                         value={this.state.sequenceNumber}
                         onChangeText={(text) => this.updateTextInput(text, 'sequenceNumber')}
-                    keyboardType={'numeric'}
-                />
-                    <TextInput
+                        keyboardType={'numeric'}
+                    />
+                </View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style={styles.subContainer}>
+                    <TextInput textAlign={'center'}
                         placeholder={'Task'}
                         value={this.state.taskName}
                         onChangeText={(text) => this.updateTextInput(text, 'taskName')}
                     />
-                    <TextInput
+                </View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style={styles.subContainer}>
+                    <TextInput textAlign={'center'}
                         placeholder={'Time'}
                         value={this.state.timeSeconds}
                         onChangeText={(text) => this.updateTextInput(text, 'timeSeconds')}
                     />
-
                 </View>
 
-                <View style={styles.button}>
-                    <Button
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style = {styles.containerTest}>
+                <View style={styles.buttonContainer}>
+                    <Button style={styles.button}
                         large
                         leftIcon={{name: 'update'}}
                         title='Update'
                         onPress={() => this.updateTimerTask()} />
+                </View>
+
+                <View style={styles.buttonContainer}>
+                    <Button style = {styles.button}
+                            large
+                            leftIcon={{name: 'delete'}}
+                            title='Delete Task'
+                            onPress={() => this.deleteTask(this.state.key)} />
+                </View>
+
                 </View>
             </ScrollView>
         );
@@ -156,15 +197,23 @@ class EditTaskScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+
+
     container: {
         flex: 1,
         padding: 20
     },
     subContainer: {
-        flex: 1,
+        flex:1,
+        margin: 5,
         paddingBottom: 20,
         borderBottomWidth: 2,
         borderBottomColor: '#CCCCCC',
+        borderWidth: 2,
+        borderColor: '#000000',
+        borderRadius: 20 ,
+        textAlignVertical: 'auto',
+        alignItems: 'center'
     },
     activity: {
         position: 'absolute',
@@ -176,8 +225,28 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     detailButton: {
-        marginTop: 10
-    }
+        marginTop: 20,
+        alignItems: 'center'
+    },
+
+    containerTest: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 10,
+
+    },
+    buttonContainer: {
+        //justifyContent: 'space-evenly',
+        marginLeft: 5,
+        textAlign: 'justify',
+        alignItems: 'center',
+    },
+    button: {
+        width: Dimensions.get('window').width * .40,
+
+    },
 })
 
 export default EditTaskScreen;
