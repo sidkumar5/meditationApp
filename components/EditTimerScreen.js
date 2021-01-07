@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, TextInput } from 'react-native';
+import {StyleSheet, ScrollView, ActivityIndicator, View, TextInput, Image, StatusBar} from 'react-native';
 import { Button } from 'react-native-elements';
 import firebase from '../Firebase';
+import * as ImagePicker from "expo-image-picker";
 
 
 class EditTimerScreen extends Component {
@@ -42,6 +43,104 @@ class EditTimerScreen extends Component {
         this.setState(state);
     }
 
+    _maybeRenderUploadingOverlay = () => {
+        if (this.state.uploading) {
+            return (
+                <View
+                    style={[
+                        StyleSheet.absoluteFill,
+                        {
+                            backgroundColor: 'rgba(0,0,0,0.4)',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        },
+                    ]}>
+                    <ActivityIndicator color="#fff" animating size="large" />
+                </View>
+            );
+        }
+    };
+
+    _maybeRenderImage = () => {
+        let { image } = this.state;
+        console.log("uploaded ",this.state.image);
+        if (!image) {
+            return;
+        }
+
+        return (
+            <View
+                style={{
+                    marginTop: 30,
+                    width: 50,
+                    borderRadius: 3,
+                    elevation: 2,
+                }}>
+                <View
+                    style={{
+                        borderTopRightRadius: 3,
+                        borderTopLeftRadius: 3,
+                        shadowColor: 'rgba(0,0,0,1)',
+                        shadowOpacity: 0.2,
+                        shadowOffset: { width: 4, height: 4 },
+                        shadowRadius: 5,
+                        overflow: 'hidden',
+                    }}>
+                    <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />
+                </View>
+
+            </View>
+        );
+    };
+
+    _share = () => {
+        Share.share({
+            message: this.state.image,
+            title: 'Check out this photo',
+            url: this.state.image,
+        });
+    };
+
+    _copyToClipboard = () => {
+        Clipboard.setString(this.state.image);
+        alert('Copied image URL to clipboard');
+    };
+
+    _takePhoto = async () => {
+        let pickerResult = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+        });
+
+        this._handleImagePicked(pickerResult);
+    };
+
+
+    _pickImage = async () => {
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+        });
+
+        this._handleImagePicked(pickerResult);
+    };
+
+    _handleImagePicked = async pickerResult => {
+        try {
+            this.setState({ uploading: true });
+
+            if (!pickerResult.cancelled) {
+                const uploadUrl = await uploadImageAsync(pickerResult.uri);
+                this.setState({ image: uploadUrl });
+            }
+        } catch (e) {
+            console.log(e);
+            alert('Upload failed, sorry :(');
+        } finally {
+            this.setState({ uploading: false });
+        }
+    };
+
     updateTimer() {
         this.setState({
             isLoading: true,
@@ -49,7 +148,8 @@ class EditTimerScreen extends Component {
         const { navigation } = this.props;
         const updateRef = firebase.firestore().collection('timers').doc(this.state.key);
         updateRef.set({
-            name: this.state.name
+            name: this.state.name,
+            image: this.state.image,
         }).then((docRef) => {
             this.setState({
                 key: '',
@@ -87,6 +187,33 @@ class EditTimerScreen extends Component {
                     />
                 </View>
 
+                <View >
+
+
+
+
+                    {this._maybeRenderImage()}
+                    {this._maybeRenderUploadingOverlay()}
+
+                    <StatusBar barStyle="default" />
+                </View>
+
+
+                <View style={styles.imageButton}>
+                    <View style={{flex:1 }} >
+                        <Button
+                            onPress={this._pickImage}
+                            title="Pick image"
+                        />
+                    </View>
+
+                    <View style={{flex:1 , marginLeft:10}} >
+                        <Button onPress={this._takePhoto} title="Take photo" />
+                    </View>
+
+
+                </View>
+
                 <View style={styles.button}>
                     <Button
                         large
@@ -121,7 +248,41 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    imageButton: {
+        marginTop: 10,
+        flexDirection: 'row' }
 })
+
+async function uploadImageAsync(uri) {
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+            resolve(xhr.response);
+        };
+        xhr.onerror = function(e) {
+            console.log(e);
+            reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', uri, true);
+        xhr.send(null);
+    });
+
+    const ref = firebase
+        .storage()
+        .ref()
+        .child(Date.now()+'taskimage');
+    console.log("in uploadimage ",ref);
+    const snapshot = await ref.put(blob);
+
+
+    // We're done with the blob, close and release it
+    //blob.close();
+
+    return await snapshot.ref.getDownloadURL();
+}
 
 export default EditTimerScreen;
