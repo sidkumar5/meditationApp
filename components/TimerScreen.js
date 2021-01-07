@@ -76,7 +76,6 @@ class TimerScreen extends Component {
                             onPress={() => {
                                 this.props.navigation.navigate('RunTimer', {
                                     timerkey: `${JSON.stringify(item.key)}`,
-                                    timerName: `${JSON.stringify(item.name)}`,
                                 });
                             }}
                         >
@@ -84,31 +83,22 @@ class TimerScreen extends Component {
                             <ListItem.Content>
                                 <ListItem.Title >{item.name}</ListItem.Title>
                             </ListItem.Content>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.props.navigation.navigate('TimerDetails', {
-                                        timerkey: `${JSON.stringify(item.key)}`,
-                                        timerName: `${JSON.stringify(item.name)}`,
-                                    });
-                                }}
-                            >
-                                <Text>
-                                    Edit
-                                </Text>
+                            <TouchableOpacity>
+                                <Button
+                                    buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
+                                    icon={{ name: 'create', style: { marginRight: 20, fontSize: 28 } }}
+                                    onPress={() => {
+                                        this.props.navigation.navigate('TimerDetails', {
+                                            timerkey: `${JSON.stringify(item.key)}`,
+                                            timerName: `${JSON.stringify(item.name)}`,
+                                        });
+                                    }}
+                                />
                             </TouchableOpacity>
+
                             <ListItem.Chevron />
 
                         </ListItem>
-
-                        // <ListItem key={i} bottomDivider >
-                        //     <ListItem.Content>
-                        //         <ListItem.Title >{item.name}</ListItem.Title>
-//
-                        //    </ListItem.Content>
-
-                        //  </ListItem>
-
-
                     ))
                 }
 
