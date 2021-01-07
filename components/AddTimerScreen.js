@@ -168,6 +168,7 @@ class AddTimerScreen extends Component {
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
                     <TextInput
+                        maxLength={20}
                         placeholder={'Name'}
                         value={this.state.name}
                         onChangeText={(text) => this.updateTextInput(text, 'name')}

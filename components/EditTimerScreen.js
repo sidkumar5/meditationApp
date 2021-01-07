@@ -40,7 +40,9 @@ class EditTimerScreen extends Component {
     updateTextInput = (text, field) => {
         const state = this.state
         state[field] = text;
+
         this.setState(state);
+
     }
 
     _maybeRenderUploadingOverlay = () => {
@@ -181,6 +183,7 @@ class EditTimerScreen extends Component {
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
                     <TextInput
+                        maxLength={20}
                         placeholder={'Name'}
                         value={this.state.name}
                         onChangeText={(text) => this.updateTextInput(text, 'name')}
