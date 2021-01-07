@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator, View, Text , TouchableOpacity} from 'react-native';
 import {  ListItem, Button, Icon, Avatar } from 'react-native-elements';
 import firebase from '../Firebase';
 //sid kumar
@@ -74,7 +74,7 @@ class TimerScreen extends Component {
                             key={i}
                             bottomDivider
                             onPress={() => {
-                                this.props.navigation.navigate('TimerDetails', {
+                                this.props.navigation.navigate('RunTimer', {
                                     timerkey: `${JSON.stringify(item.key)}`,
                                     timerName: `${JSON.stringify(item.name)}`,
                                 });
@@ -84,6 +84,18 @@ class TimerScreen extends Component {
                             <ListItem.Content>
                                 <ListItem.Title >{item.name}</ListItem.Title>
                             </ListItem.Content>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.props.navigation.navigate('TimerDetails', {
+                                        timerkey: `${JSON.stringify(item.key)}`,
+                                        timerName: `${JSON.stringify(item.name)}`,
+                                    });
+                                }}
+                            >
+                                <Text>
+                                    Edit
+                                </Text>
+                            </TouchableOpacity>
                             <ListItem.Chevron />
 
                         </ListItem>
