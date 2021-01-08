@@ -298,6 +298,7 @@ class EditTaskScreen extends Component {
                         placeholder={'Time'}
                         value={this.state.timeSeconds}
                         onChangeText={(text) => this.updateTextInput(text, 'timeSeconds')}
+                        keyboardType={'numeric'}
                     />
 
                 </View>
