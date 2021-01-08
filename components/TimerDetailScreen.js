@@ -173,22 +173,7 @@ class TimerDetailScreen extends Component {
 
                     </View>
                     <View style={styles.detailButton}>
-                        <View style={{flex:1 , marginLeft:10}} >
-                        <Button
-                            titleStyle={{
-                                color: "white",
-                                fontSize: 10,
-                            }}
-                            small
-                            backgroundColor={'#CCCCCC'}
-                            leftIcon={{name: 'edit'}}
-                            title='Run Timer'
-                            onPress={() => {
-                                this.props.navigation.navigate('RunTimer', {
-                                    timerkey: `${JSON.stringify(this.state.key)}`,
-                                });
-                            }} />
-                        </View>
+                        
                         <View style={{flex:1 , marginLeft:10}} >
                         <Button
                             titleStyle={{
