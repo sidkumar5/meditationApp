@@ -1,6 +1,6 @@
 // Commit
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator, View, TouchableOpacity, Image } from 'react-native';
 import {  ListItem, Text, Card, Button } from 'react-native-elements';
 import firebase from '../Firebase';
 import moment from "moment"
@@ -26,6 +26,7 @@ class RunTimerScreen extends Component {
             isLoading: true,
             timers: {},
             key: '',
+            image: '',
             currentTimer: '10:00',
             sessionInProgress: false,
             eventDate:moment.duration().add({days:0,hours:0,minutes:0,seconds:10}), // add 9 full days, 3 hours, 40 minutes and 50 seconds
@@ -75,7 +76,7 @@ class RunTimerScreen extends Component {
     onCollectionUpdate = (querySnapshot) => {
         const tasks = [];
         querySnapshot.forEach((doc) => {
-            const { taskName, timeSeconds, sequenceNumber } = doc.data();
+            const { taskName, timeSeconds, sequenceNumber, image } = doc.data();
             console.log("Tasks data")
             console.log(doc.data());
             tasks.push({
@@ -83,7 +84,8 @@ class RunTimerScreen extends Component {
                 doc, // DocumentSnapshot
                 taskName,
                 timeSeconds,
-                sequenceNumber
+                sequenceNumber,
+                image
             });
         });
         console.log("Setting state");
@@ -101,9 +103,8 @@ class RunTimerScreen extends Component {
             this.state.secs = this.state.tasks[0].timeSeconds;
             this.state.currentTaskName = this.state.tasks[0].taskName;
             this.state.image = this.state.tasks[0].image;
-            console.log("After setting the state");
-            console.log(tasks.length);
-            console.log(tasks[0]);
+            this.state.image = this.state.tasks[0].image;
+
         } else if (this.state.tasks.taskName == null) {
             this.state.secs = 0;
             this.state.currentTaskName = 'Please add some tasks first!';
@@ -144,9 +145,12 @@ class RunTimerScreen extends Component {
                 if (this.state.currentTask < this.state.tasks.length) {
                     this.state.eventDate = moment.duration().add({days:0,hours:0,minutes:0,seconds:this.state.tasks[this.state.currentTask].timeSeconds});
                     this.state.currentTaskName = this.state.tasks[this.state.currentTask].taskName;
+                    this.state.image = this.state.tasks[this.state.currentTask].image;
                     this.startTimer()
                     this.playTone()
                 }
+
+
 
 
 
@@ -207,6 +211,55 @@ class RunTimerScreen extends Component {
         });
     }
 
+    _maybeRenderUploadingOverlay = () => {
+        if (this.state.uploading) {
+            return (
+                <View
+                    style={[
+                        StyleSheet.absoluteFill,
+                        {
+                            backgroundColor: 'rgba(0,0,0,0.4)',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        },
+                    ]}>
+                    <ActivityIndicator color="#fff" animating size="large" />
+                </View>
+            );
+        }
+    };
+
+    _maybeRenderImage = () => {
+        let { image } = this.state;
+        if (!image) {
+            return;
+        }
+
+        return (
+            <View
+                style={{
+                    marginTop: 30,
+                    width: 150,
+                    borderRadius: 3,
+                    elevation: 2,
+                }}>
+                <View
+                    style={{
+                        borderTopRightRadius: 3,
+                        borderTopLeftRadius: 3,
+                        shadowColor: 'rgba(0,0,0,1)',
+                        shadowOpacity: 0.2,
+                        shadowOffset: { width: 4, height: 4 },
+                        shadowRadius: 5,
+                        overflow: 'hidden',
+                    }}>
+                    <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
+                </View>
+
+            </View>
+        );
+    };
+
 
 
     render() {
@@ -236,6 +289,10 @@ class RunTimerScreen extends Component {
                         </View>
 
                         <Text style={styles.instructions}>{this.state.currentTaskName}</Text>
+
+                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
+                            <Image source={{ uri: this.state.image }} style={{ width: 150, height: 150 }} />
+                        </View>
 
 
                         {!this.state.sessionInProgress && this.state.numberOfTasks > 0 &&
