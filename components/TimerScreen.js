@@ -74,19 +74,39 @@ class TimerScreen extends Component {
                                 key={i}
                                 bottomDivider
                                 onPress={() => {
-                                    this.props.navigation.navigate('TimerDetails', {
+                                    this.props.navigation.navigate('RunTimer', {
                                         timerkey: `${JSON.stringify(item.key)}`,
                                         timerName: `${JSON.stringify(item.name)}`,
                                     });
                                 }}
                             >
-                                <Avatar title="T"  rounded source={{uri: item.image}} />
+                                <Avatar source={{uri: item.image}} />
                                 <ListItem.Content>
                                     <ListItem.Title >{item.name}</ListItem.Title>
                                 </ListItem.Content>
+                                <TouchableOpacity>
+                                    <Button
+                                        buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
+                                        icon={{ name: 'create', style: { marginRight: 20, fontSize: 28 } }}
+                                        onPress={() => {
+                                            this.props.navigation.navigate('TimerDetails', {
+                                                timerkey: `${JSON.stringify(item.key)}`,
+                                                timerName: `${JSON.stringify(item.name)}`,
+                                            });
+                                        }}
+                                    />
+                                </TouchableOpacity>
+
                                 <ListItem.Chevron />
 
                             </ListItem>
+                        ))
+                    }
+
+            </ScrollView>
+        );
+    }
+}
 
                            // <ListItem key={i} bottomDivider >
                            //     <ListItem.Content>
@@ -97,48 +117,11 @@ class TimerScreen extends Component {
                           //  </ListItem>
 
 
-                        ))
-                    }
-
-                {
-                    this.state.timers.map((item, i) => (
-                        <ListItem
-                            key={i}
-                            bottomDivider
-                            onPress={() => {
-                                this.props.navigation.navigate('RunTimer', {
-                                    timerkey: `${JSON.stringify(item.key)}`,
-                                });
-                            }}
-                        >
-                            <Avatar source={{uri: item.image}} />
-                            <ListItem.Content>
-                                <ListItem.Title >{item.name}</ListItem.Title>
-                            </ListItem.Content>
-                            <TouchableOpacity>
-                                <Button
-                                    buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
-                                    icon={{ name: 'create', style: { marginRight: 20, fontSize: 28 } }}
-                                    onPress={() => {
-                                        this.props.navigation.navigate('TimerDetails', {
-                                            timerkey: `${JSON.stringify(item.key)}`,
-                                            timerName: `${JSON.stringify(item.name)}`,
-                                        });
-                                    }}
-                                />
-                            </TouchableOpacity>
-
-                            <ListItem.Chevron />
-
-                        </ListItem>
-                    ))
-                }
 
 
-            </ScrollView>
-        );
-    }
-}
+
+
+
 
 const styles = StyleSheet.create({
     container: {
