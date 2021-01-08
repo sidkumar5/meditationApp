@@ -233,8 +233,8 @@ class RunTimerScreen extends Component {
     onSpeak = () => {
         Speech.speak(this.state.currentTaskName, {
             language: 'en',
-            pitch: 1,
-            rate: 1,
+            pitch: .5,
+            rate: .5,
         });
     }
 
