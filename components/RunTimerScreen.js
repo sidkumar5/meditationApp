@@ -103,6 +103,11 @@ class RunTimerScreen extends Component {
             console.log("After setting the state");
             console.log(tasks.length);
             console.log(tasks[0]);
+        } else if (this.state.tasks.taskName == null) {
+            this.state.secs = 0;
+            this.state.currentTaskName = 'Please add some tasks first!';
+            this.state.currentTask--;
+
         }
 
 
@@ -232,7 +237,7 @@ class RunTimerScreen extends Component {
                         <Text style={styles.instructions}>{this.state.currentTaskName}</Text>
 
 
-                        { !this.state.sessionInProgress && this.state.currentTaskName && this.state.currentTaskName.length >0 &&
+                        { !this.state.sessionInProgress && this.state.currentTaskName && this.state.currentTaskName.length && this.state.tasks.taskName  >0 &&
                         <TouchableOpacity style={styles.beginButton} onPress={this.beginSession}>
                             <Text style={styles.colorWhite}>Start</Text>
                         </TouchableOpacity>
