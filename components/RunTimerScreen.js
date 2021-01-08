@@ -93,11 +93,23 @@ class RunTimerScreen extends Component {
             currentTask : 0,
             playing : false
         });
+
         this.state.secs = this.state.tasks[0].timeSeconds;
         this.state.currentTaskName = this.state.tasks[0].taskName;
         console.log("After setting the state");
         console.log(tasks.length);
         console.log(tasks[0]);
+
+        if (this.state.tasks.length>0) {
+            this.state.secs = this.state.tasks[0].timeSeconds;
+            this.state.currentTaskName = this.state.tasks[0].taskName;
+            this.state.image = this.state.tasks[0].image;
+            console.log("After setting the state");
+            console.log(tasks.length);
+            console.log(tasks[0]);
+        }
+
+
 
 
     }
@@ -220,7 +232,7 @@ class RunTimerScreen extends Component {
                         <Text style={styles.instructions}>{this.state.currentTaskName}</Text>
 
 
-                        { !this.state.sessionInProgress &&
+                        { !this.state.sessionInProgress && this.state.currentTaskName && this.state.currentTaskName.length >0 &&
                         <TouchableOpacity style={styles.beginButton} onPress={this.beginSession}>
                             <Text style={styles.colorWhite}>Start</Text>
                         </TouchableOpacity>
