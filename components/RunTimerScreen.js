@@ -8,6 +8,7 @@ import { Audio } from 'expo-av';
 
 import * as Speech from 'expo-speech';
 import {speak} from "expo-speech";
+//abcd
 
 
 
