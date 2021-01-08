@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
 import {  ListItem, Text, Card, Button , Icon, Avatar} from 'react-native-elements';
 import firebase from '../Firebase';
+import {  Alert } from "react-native";
 
 class TimerDetailScreen extends Component {
 
@@ -94,7 +95,30 @@ class TimerDetailScreen extends Component {
                 isLoading: false
             });
         });
+
     }
+
+    createTwoButtonAlert(key) {
+        console.log("In the alert function",key);
+        //alert('Alert with one button');
+        Alert.alert(
+            "Confirm",
+            "Do you really want to delete",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Ok",
+                    onPress: () => this.deleteTimer(this.state.key)
+                }
+            ],
+            { cancelable: true }
+        );
+    }
+
 
 
 
@@ -208,14 +232,20 @@ class TimerDetailScreen extends Component {
                             color={'#FFFFFF'}
                             leftIcon={{name: 'delete'}}
                             title='Delete'
-                            onPress={() => this.deleteTimer(this.state.key)} />
+                            onPress={() => this.createTwoButtonAlert(this.state.key)} />
+
+
+
                         </View>
+
+
                     </View>
 
                 </Card>
             </ScrollView>
         );
     }
+
 
 
 }
@@ -242,7 +272,14 @@ const styles = StyleSheet.create({
     },
     detailButton: {
         marginTop: 10,
-        flexDirection: 'row' }
+        flexDirection: 'row' },
+
+               containerAlert: {
+                   flex: 1,
+                   justifyContent: "space-around",
+                   alignItems: "center"
+               }
+
 })
 
 export default TimerDetailScreen;
