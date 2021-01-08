@@ -121,10 +121,14 @@ class RunTimerScreen extends Component {
         this.sound.playAsync();
     }
 
+    playDelayed(){
+        setTimeout(this.onSpeak, 500)
+    }
+
 
     resetTimer () {}
     startTimer () {
-        this.onSpeak();
+        this.playDelayed();
 
 
         this.state.timerF = setInterval(()=>{
