@@ -94,11 +94,7 @@ class RunTimerScreen extends Component {
             playing : false
         });
 
-        this.state.secs = this.state.tasks[0].timeSeconds;
-        this.state.currentTaskName = this.state.tasks[0].taskName;
-        console.log("After setting the state");
-        console.log(tasks.length);
-        console.log(tasks[0]);
+
 
         if (this.state.tasks.length>0) {
             this.state.secs = this.state.tasks[0].timeSeconds;
