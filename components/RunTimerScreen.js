@@ -5,8 +5,11 @@ import {  ListItem, Text, Card, Button } from 'react-native-elements';
 import firebase from '../Firebase';
 import moment from "moment"
 import { Audio } from 'expo-av';
-//poop
-//coke
+
+import * as Speech from 'expo-speech';
+import {speak} from "expo-speech";
+
+
 
 class RunTimerScreen extends Component {
     static navigationOptions = {
@@ -56,6 +59,10 @@ class RunTimerScreen extends Component {
         };
 
         this.sound.loadAsync(require('../assets/bell.mp3'), status, false);
+        const speak = () => {
+            const thingToSay = 'hello';
+            Speech.speak(thingToSay);
+        };
 
     }
 
@@ -101,8 +108,13 @@ class RunTimerScreen extends Component {
     playTone () {
         this.sound.playAsync();
     }
+
+
     resetTimer () {}
     startTimer () {
+        this.onSpeak();
+
+
         this.state.timerF = setInterval(()=>{
 
             let { eventDate} = this.state
@@ -115,7 +127,11 @@ class RunTimerScreen extends Component {
                     this.state.eventDate = moment.duration().add({days:0,hours:0,minutes:0,seconds:this.state.tasks[this.state.currentTask].timeSeconds});
                     this.state.currentTaskName = this.state.tasks[this.state.currentTask].taskName;
                     this.startTimer()
+                    this.playTone()
                 }
+
+
+
             }else {
                 if (this.state.sessionInProgress) {
                 eventDate = eventDate.subtract(1,"s")
@@ -145,7 +161,7 @@ class RunTimerScreen extends Component {
             this.state.currentTaskName = this.state.tasks[0].taskName;
             this.state.playing = true;
             this.startTimer()
-            this.playTone()
+
         } else {
             this.startTimer()
 
@@ -156,12 +172,22 @@ class RunTimerScreen extends Component {
         })
     }
     stopSession = () => {
+
         this.state.timerF = clearInterval(this.state.timerF);
         this.setState({
             sessionInProgress: false
         })
+
     }
 
+
+    onSpeak = () => {
+        Speech.speak(this.state.currentTaskName, {
+            language: 'en',
+            pitch: .5,
+            rate: .5,
+        });
+    }
 
 
 
