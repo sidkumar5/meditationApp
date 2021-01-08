@@ -237,7 +237,7 @@ class RunTimerScreen extends Component {
                         <Text style={styles.instructions}>{this.state.currentTaskName}</Text>
 
 
-                        { !this.state.sessionInProgress && this.state.currentTaskName && this.state.currentTaskName.length && this.state.tasks.taskName  >0 &&
+                        {this.state.numberOfTasks > 0 &&
                         <TouchableOpacity style={styles.beginButton} onPress={this.beginSession}>
                             <Text style={styles.colorWhite}>Start</Text>
                         </TouchableOpacity>
