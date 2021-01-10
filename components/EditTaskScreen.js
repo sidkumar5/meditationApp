@@ -249,7 +249,7 @@ class EditTaskScreen extends Component {
                 </View>
 
 
-                <View style={styles.button}>
+                <View style={styles.imageButton}>
                     <View style={{flex:1 }} >
                         <Button
                             onPress={this._pickImage}
@@ -340,7 +340,11 @@ const styles = StyleSheet.create({
     },
     detailButton: {
         marginTop: 10
-    }
+    },
+
+    imageButton: {
+    marginTop: 10,
+        flexDirection: 'row' }
 })
 async function uploadImageAsync(uri) {
     // Why are we using XMLHttpRequest? See:

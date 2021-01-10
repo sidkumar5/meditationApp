@@ -217,7 +217,7 @@ class EditTimerScreen extends Component {
 
                 </View>
 
-                <View style={styles.button}>
+                <View style={{flex:1 , marginTop:10}}>
                     <Button
                         large
                         leftIcon={{name: 'update'}}

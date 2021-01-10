@@ -1,8 +1,9 @@
 //rohil test
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View, Text , TouchableOpacity} from 'react-native';
-import {  ListItem, Button, Icon, Avatar } from 'react-native-elements';
+import {  ListItem, Button, Avatar } from 'react-native-elements';
 import firebase from '../Firebase';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class TimerScreen extends Component {
 
@@ -84,6 +85,20 @@ class TimerScreen extends Component {
                                 <ListItem.Content>
                                     <ListItem.Title >{item.name}</ListItem.Title>
                                 </ListItem.Content>
+                                <Icon.Button
+                                    name="play"
+                                    size={16}
+                                    color="black"
+                                    backgroundColor="white"
+                                    onPress={() => {
+                                        this.props.navigation.navigate('RunTimer', {
+                                            timerkey: `${JSON.stringify(item.key)}`,
+                                            timerName: `${JSON.stringify(item.name)}`,
+                                        });
+                                    }}
+                                >
+
+                                </Icon.Button>
                                 <TouchableOpacity>
                                     <Button
                                         buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
@@ -97,7 +112,7 @@ class TimerScreen extends Component {
                                     />
                                 </TouchableOpacity>
 
-                                <ListItem.Chevron />
+
 
                             </ListItem>
                         ))
