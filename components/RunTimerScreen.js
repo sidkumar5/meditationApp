@@ -12,8 +12,10 @@ import {speak} from "expo-speech";
 
 
 class RunTimerScreen extends Component {
-    static navigationOptions = {
-        title: 'Run Timer',
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: JSON.parse(navigation.getParam('timerName', 'Timer Details')),
+        };
     };
 
     constructor(props) {
