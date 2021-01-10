@@ -213,7 +213,7 @@ class EditTimerScreen extends Component {
                     <View style={{flex:1 , marginLeft:10}} >
                         <Button onPress={this._takePhoto} title="Take photo" />
                     </View>
-
+                </View>
 
 
                <View style={{flex:1 , marginTop:10}}>
