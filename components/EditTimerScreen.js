@@ -215,15 +215,16 @@ class EditTimerScreen extends Component {
                     </View>
 
 
-                </View>
 
-                <View style={{flex:1 , marginTop:10}}>
+               <View style={{flex:1 , marginTop:10}}>
                     <Button
                         large
                         leftIcon={{name: 'update'}}
                         title='Update'
                         onPress={() => this.updateTimer()} />
+
                 </View>
+
             </ScrollView>
         );
     }
@@ -254,7 +255,11 @@ const styles = StyleSheet.create({
     },
     imageButton: {
         marginTop: 10,
-        flexDirection: 'row' }
+        marginBottom: 10,
+        flexDirection: 'row' },
+    button:{
+        paddingBottom: 10
+    }
 })
 
 async function uploadImageAsync(uri) {
