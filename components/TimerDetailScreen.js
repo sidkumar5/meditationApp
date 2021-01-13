@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
-import {  ListItem, Text, Card, Button , Icon, Avatar} from 'react-native-elements';
+import {  ListItem, Text, Card, Button , Avatar} from 'react-native-elements';
 import firebase from '../Firebase';
 import {  Alert } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class TimerDetailScreen extends Component {
 
@@ -181,9 +182,14 @@ class TimerDetailScreen extends Component {
                                 fontSize: 10,
                             }}
                             small
-                            backgroundColor={'#CCCCCC'}
-                            leftIcon={{name: 'edit'}}
-                            title='Add Task'
+                            icon={
+                                <Icon
+                                    name="plus-circle"
+                                    size={15}
+                                    color="white"
+                                />
+                            }
+                            title="    Add Timer"
                             onPress={() => {
                                 this.props.navigation.navigate('AddTask', {
                                     timerkey: `${JSON.stringify(this.state.timerkey)}`,
@@ -197,9 +203,14 @@ class TimerDetailScreen extends Component {
                                 fontSize: 10,
                             }}
                             small
-                            backgroundColor={'#CCCCCC'}
-                            leftIcon={{name: 'edit'}}
-                            title='Edit Timer'
+                            icon={
+                                <Icon
+                                    name="edit"
+                                    size={15}
+                                    color="white"
+                                />
+                            }
+                            title="    Edit Timer"
                             onPress={() => {
                                 this.props.navigation.navigate('EditTimer', {
                                     timerkey: `${JSON.stringify(this.state.key)}`,
@@ -213,10 +224,14 @@ class TimerDetailScreen extends Component {
                                 fontSize: 10,
                             }}
                             small
-                            backgroundColor={'#999999'}
-                            color={'#FFFFFF'}
-                            leftIcon={{name: 'delete'}}
-                            title='Delete'
+                            icon={
+                                <Icon
+                                    name="trash"
+                                    size={15}
+                                    color="white"
+                                />
+                            }
+                            title="    Delete"
                             onPress={() => this.createTwoButtonAlert(this.state.key)} />
 
 
