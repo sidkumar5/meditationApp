@@ -1,1 +1,1 @@
-# swTimerApp
+# meditationApp
