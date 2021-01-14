@@ -9,6 +9,7 @@ import AddTaskScreen from './components/AddTaskScreen';
 import AddTimerScreen from './components/AddTimerScreen';
 import EditTimerScreen from './components/EditTimerScreen';
 import RunTimerScreen from './components/RunTimerScreen';
+import HomeScreen from './components/HomeScreen';
 
 
 const RootStack =  createAppContainer(
@@ -21,9 +22,10 @@ const RootStack =  createAppContainer(
             AddTask:  AddTaskScreen,
             EditTimer: EditTimerScreen,
             RunTimer: RunTimerScreen,
+            Home: HomeScreen,
         },
         {
-            initialRouteName: 'Timer',
+            initialRouteName: 'Home',
             navigationOptions: {
                 headerStyle: {
                     backgroundColor: '#777777',
