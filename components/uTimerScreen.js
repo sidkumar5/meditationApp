@@ -5,7 +5,7 @@ import {  ListItem, Button, Avatar } from 'react-native-elements';
 import firebase from '../Firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class TimerScreen extends Component {
+class uTimerScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -101,20 +101,7 @@ class TimerScreen extends Component {
                                 >
 
                                 </Icon.Button>
-                                <Icon.Button
-                                    name="edit"
-                                    size={14}
-                                    color="black"
-                                    backgroundColor="white"
-                                    onPress={() => {
-                                        this.props.navigation.navigate('TimerDetails', {
-                                            timerkey: `${JSON.stringify(item.key)}`,
-                                            timerName: `${JSON.stringify(item.name)}`,
-                                        });
-                                    }}
-                                >
 
-                                </Icon.Button>
 
 
 
@@ -163,4 +150,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default TimerScreen;
+export default uTimerScreen;
