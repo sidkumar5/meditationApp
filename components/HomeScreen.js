@@ -4,3 +4,8 @@ import {  ListItem, Button, Avatar } from 'react-native-elements';
 import firebase from '../Firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+class HomeScreen extends Component{
+
+}
+
+export default HomeScreen;
