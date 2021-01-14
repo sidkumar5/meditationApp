@@ -10,6 +10,8 @@ import AddTimerScreen from './components/AddTimerScreen';
 import EditTimerScreen from './components/EditTimerScreen';
 import RunTimerScreen from './components/RunTimerScreen';
 import HomeScreen from './components/HomeScreen';
+import uTimerScreen from "./components/uTimerScreen";
+import uTimerDetailScreen from "./components/uTimerDetailScreen";
 
 
 const RootStack =  createAppContainer(
@@ -23,9 +25,11 @@ const RootStack =  createAppContainer(
             EditTimer: EditTimerScreen,
             RunTimer: RunTimerScreen,
             Home: HomeScreen,
+            uTimer: uTimerScreen,
+            uTImerDetails: uTimerDetailScreen
         },
         {
-            initialRouteName: 'Home',
+            initialRouteName: 'uTimer',
             navigationOptions: {
                 headerStyle: {
                     backgroundColor: '#777777',
@@ -39,26 +43,6 @@ const RootStack =  createAppContainer(
     ),
 );
 
-const RootStack1 = createStackNavigator(
-    {
-      Timer: TimerScreen,
-      TimerDetails: TimerDetailScreen,
-      AddTimer: AddTimerScreen, EditTask:  EditTaskScreen, AddTask: AddTaskScreen,
-      EditTimer: EditTimerScreen,
-    },
-    {
-      initialRouteName: 'Timer',
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: '#777777',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      },
-    },
-);
 
 export default class App extends React.Component {
   render() {
