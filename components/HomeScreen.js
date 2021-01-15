@@ -47,6 +47,13 @@ class HomeScreen extends Component {
             this.props.navigation.navigate("uTimer");
           }}
         />
+        <Button
+            style={styles.button}
+            title="Past Meditations"
+            onPress={() => {
+              this.props.navigation.navigate("history");
+            }}
+        />
       </View>
     );
   }
