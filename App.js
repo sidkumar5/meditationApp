@@ -1,48 +1,46 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import TimerScreen from './components/TimerScreen';
-import TimerDetailScreen from './components/TimerDetailScreen';
-import EditTaskScreen from './components/EditTaskScreen';
-import AddTaskScreen from './components/AddTaskScreen';
-import AddTimerScreen from './components/AddTimerScreen';
-import EditTimerScreen from './components/EditTimerScreen';
-import RunTimerScreen from './components/RunTimerScreen';
-import HomeScreen from './components/HomeScreen';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import TimerScreen from "./components/TimerScreen";
+import TimerDetailScreen from "./components/TimerDetailScreen";
+import EditTaskScreen from "./components/EditTaskScreen";
+import AddTaskScreen from "./components/AddTaskScreen";
+import AddTimerScreen from "./components/AddTimerScreen";
+import EditTimerScreen from "./components/EditTimerScreen";
+import RunTimerScreen from "./components/RunTimerScreen";
+import HomeScreen from "./components/HomeScreen";
 import uTimerScreen from "./components/uTimerScreen";
 import uTimerDetailScreen from "./components/uTimerDetailScreen";
 
-
-const RootStack =  createAppContainer(
-    createStackNavigator(
-        {
-            Timer: TimerScreen,
-            TimerDetails: TimerDetailScreen,
-            AddTimer: AddTimerScreen,
-            EditTask:  EditTaskScreen,
-            AddTask:  AddTaskScreen,
-            EditTimer: EditTimerScreen,
-            RunTimer: RunTimerScreen,
-            Home: HomeScreen,
-            uTimer: uTimerScreen,
-            uTImerDetails: uTimerDetailScreen
+const RootStack = createAppContainer(
+  createStackNavigator(
+    {
+      Timer: TimerScreen,
+      TimerDetails: TimerDetailScreen,
+      AddTimer: AddTimerScreen,
+      EditTask: EditTaskScreen,
+      AddTask: AddTaskScreen,
+      EditTimer: EditTimerScreen,
+      RunTimer: RunTimerScreen,
+      Home: HomeScreen,
+      uTimer: uTimerScreen,
+      uTimerDetails: uTimerDetailScreen,
+    },
+    {
+      initialRouteName: "Home",
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: "#777777",
         },
-        {
-            initialRouteName: 'uTimer',
-            navigationOptions: {
-                headerStyle: {
-                    backgroundColor: '#777777',
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-            },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
         },
-    ),
+      },
+    }
+  )
 );
-
 
 export default class App extends React.Component {
   render() {
@@ -53,8 +51,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
