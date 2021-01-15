@@ -22,7 +22,7 @@ class RunTimerScreen extends Component {
     constructor(props) {
         super(props);
         const { navigation } = this.props;
-        this.refDetails = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks').orderBy('sequenceNumber');
+        this.refDetails = firebase.firestore().collection('meditations').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks').orderBy('sequenceNumber');
 
         this.state = {
             isLoading: true,
@@ -42,7 +42,7 @@ class RunTimerScreen extends Component {
     componentDidMount() {
         const { navigation } = this.props;
 
-        const ref = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey')));
+        const ref = firebase.firestore().collection('meditations').doc(JSON.parse(navigation.getParam('timerkey')));
         this.unsubscribe = this.refDetails.onSnapshot(this.onCollectionUpdate);
         ref.get().then((doc) => {
             if (doc.exists) {

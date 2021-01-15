@@ -9,11 +9,11 @@ import moment from "moment"
 
 class AddTimerScreen extends Component {
     static navigationOptions = {
-        title: 'Add Timer',
+        title: 'Add Meditation',
     };
     constructor(props) {
         super(props);
-        this.ref = firebase.firestore().collection('timers');
+        this.ref = firebase.firestore().collection('meditations');
         this.state = {
             name: '',
             isLoading: false,

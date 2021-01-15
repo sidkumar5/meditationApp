@@ -20,15 +20,13 @@ class uTimerScreen extends Component {
     onCollectionUpdate = (querySnapshot) => {
         const timers = [];
         querySnapshot.forEach((doc) => {
-            const { name, tasks,image, sound, totalTime } = doc.data();
+            const { name, tasks,image } = doc.data();
             timers.push({
                 key: doc.id,
                 doc, // DocumentSnapshot
                 name,
                 tasks,
-                image,
-                sound,
-                totalTime
+                image
             });
         });
         console.log("Setting state");
@@ -49,13 +47,6 @@ class uTimerScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'My Meditations',
-            headerRight: (
-                <Button
-                    buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
-                    icon={{ name: 'add-circle', style: { marginRight: 20, fontSize: 28 } }}
-                    onPress={() => { navigation.push('AddTimer') }}
-                />
-            ),
         };
     };
 
@@ -71,11 +62,27 @@ class uTimerScreen extends Component {
         return (
             <ScrollView style={styles.container}>
 
-                    {
-                        this.state.timers.map((item, i) => (
-                            <ListItem
-                                key={i}
-                                bottomDivider
+                {
+                    this.state.timers.map((item, i) => (
+                        <ListItem
+                            key={i}
+                            bottomDivider
+                            onPress={() => {
+                                this.props.navigation.navigate('RunTimer', {
+                                    timerkey: `${JSON.stringify(item.key)}`,
+                                    timerName: `${JSON.stringify(item.name)}`,
+                                });
+                            }}
+                        >
+                            <Avatar source={{uri: item.image}} />
+                            <ListItem.Content>
+                                <ListItem.Title >{item.name}</ListItem.Title>
+                            </ListItem.Content>
+                            <Icon.Button
+                                name="play"
+                                size={14}
+                                color="black"
+                                backgroundColor="white"
                                 onPress={() => {
                                     this.props.navigation.navigate('RunTimer', {
                                         timerkey: `${JSON.stringify(item.key)}`,
@@ -83,44 +90,27 @@ class uTimerScreen extends Component {
                                     });
                                 }}
                             >
-                                <Avatar source={{uri: item.image}} />
-                                <ListItem.Content>
-                                    <ListItem.Title >{item.name}</ListItem.Title>
-                                </ListItem.Content>
-                                <Icon.Button
-                                    name="play"
-                                    size={14}
-                                    color="black"
-                                    backgroundColor="white"
-                                    onPress={() => {
-                                        this.props.navigation.navigate('RunTimer', {
-                                            timerkey: `${JSON.stringify(item.key)}`,
-                                            timerName: `${JSON.stringify(item.name)}`,
-                                        });
-                                    }}
-                                >
 
-                                </Icon.Button>
+                            </Icon.Button>
 
 
 
-
-                            </ListItem>
-                        ))
-                    }
+                        </ListItem>
+                    ))
+                }
 
             </ScrollView>
         );
     }
 }
 
-                           // <ListItem key={i} bottomDivider >
-                           //     <ListItem.Content>
-                           //         <ListItem.Title >{item.name}</ListItem.Title>
+// <ListItem key={i} bottomDivider >
+//     <ListItem.Content>
+//         <ListItem.Title >{item.name}</ListItem.Title>
 //
-                            //    </ListItem.Content>
+//    </ListItem.Content>
 
-                          //  </ListItem>
+//  </ListItem>
 
 
 

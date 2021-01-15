@@ -9,7 +9,7 @@ class TimerScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.ref = firebase.firestore().collection('timers').orderBy('name');
+        this.ref = firebase.firestore().collection('meditations').orderBy('name');
         this.unsubscribe = null;
         this.state = {
             isLoading: true,

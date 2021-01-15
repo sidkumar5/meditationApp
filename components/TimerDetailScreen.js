@@ -16,7 +16,7 @@ class TimerDetailScreen extends Component {
     constructor(props) {
         super(props);
         const { navigation } = this.props;
-        this.refDetails = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks').orderBy('sequenceNumber');
+        this.refDetails = firebase.firestore().collection('meditations').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks').orderBy('sequenceNumber');
 
         this.state = {
             isLoading: true,
