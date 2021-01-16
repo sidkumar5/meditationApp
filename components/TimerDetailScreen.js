@@ -28,7 +28,7 @@ class TimerDetailScreen extends Component {
     componentDidMount() {
         const { navigation } = this.props;
 
-        const ref = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey')));
+        const ref = firebase.firestore().collection('meditations').doc(JSON.parse(navigation.getParam('timerkey')));
         this.unsubscribe = this.refDetails.onSnapshot(this.onCollectionUpdate);
         ref.get().then((doc) => {
             if (doc.exists) {
@@ -84,7 +84,7 @@ class TimerDetailScreen extends Component {
         this.setState({
             isLoading: true
         });
-        firebase.firestore().collection('timers').doc(key).delete().then(() => {
+        firebase.firestore().collection('meditations').doc(key).delete().then(() => {
             console.log("Document successfully deleted!");
             this.setState({
                 isLoading: false
@@ -189,7 +189,7 @@ class TimerDetailScreen extends Component {
                                     color="white"
                                 />
                             }
-                            title="    Add Timer"
+                            title="    Add Action"
                             onPress={() => {
                                 this.props.navigation.navigate('AddTask', {
                                     timerkey: `${JSON.stringify(this.state.timerkey)}`,
@@ -210,7 +210,7 @@ class TimerDetailScreen extends Component {
                                     color="white"
                                 />
                             }
-                            title="    Edit Timer"
+                            title="    Edit Actions"
                             onPress={() => {
                                 this.props.navigation.navigate('EditTimer', {
                                     timerkey: `${JSON.stringify(this.state.key)}`,

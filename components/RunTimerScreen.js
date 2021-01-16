@@ -64,7 +64,7 @@ class RunTimerScreen extends Component {
 
         };
 
-        this.sound.loadAsync(require('../assets/bell.mp3'), status, false);
+        this.sound.loadAsync(require('../assets/meditate.mp3'), status, false);
         const speak = () => {
             const thingToSay = 'hello';
             Speech.speak(thingToSay);
@@ -125,7 +125,7 @@ class RunTimerScreen extends Component {
 
 
     playTone () {
-        this.sound.replayAsync();
+        this.sound.playAsync();
 
     }
 
@@ -145,7 +145,7 @@ class RunTimerScreen extends Component {
 
             if(eventDate <=0){
                 clearInterval(this.state.timerF )
-                this.playTone()
+
                 this.state.currentTask ++;
                 if (this.state.currentTask < this.state.tasks.length) {
                     this.state.eventDate = moment.duration().add({days:0,hours:0,minutes:0,seconds:this.state.tasks[this.state.currentTask].timeSeconds});
@@ -154,8 +154,9 @@ class RunTimerScreen extends Component {
                     this.playTone()
                     this.startTimer()
 
+                } else if (this.state.currentTask == this.state.tasks.length) {
+                    this.sound.unloadAsync()
                 }
-                this.playTone()
 
 
 
@@ -184,7 +185,7 @@ class RunTimerScreen extends Component {
     }
     beginSession = () => {
 
-
+        this.playTone()
 
         if (!this.state.playing ) {
             this.state.eventDate = moment.duration().add({days:0,hours:0,minutes:0,seconds:this.state.tasks[0].timeSeconds});
@@ -207,6 +208,7 @@ class RunTimerScreen extends Component {
         this.setState({
             sessionInProgress: false
         })
+        this.sound.unloadAsync()
 
     }
 
