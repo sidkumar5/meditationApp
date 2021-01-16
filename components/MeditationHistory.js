@@ -14,31 +14,33 @@ class MeditationHistory extends Component {
         this.unsubscribe = null;
         this.state = {
             isLoading: true,
-            timers: []
+            MeditationHistory: []
         };
     }
 
     onCollectionUpdate = (querySnapshot) => {
-        const timers = [];
+        const MeditationHistory = [];
         querySnapshot.forEach((doc) => {
-            const { name, tasks,image } = doc.data();
-            timers.push({
+            const { name, totalTime,image,userName,medidatedAt } = doc.data();
+            MeditationHistory.push({
                 key: doc.id,
                 doc, // DocumentSnapshot
                 name,
-                tasks,
-                image
+                totalTime,
+                image,
+                userName,
+                medidatedAt,
             });
         });
         console.log("Setting state");
         console.log(this.state);
-        console.log(timers['name']);
+        console.log(MeditationHistory['name']);
         this.setState({
-            timers : timers,
+            MeditationHistory : MeditationHistory,
             isLoading: false,
         });
         console.log("After setting state");
-        console.log(timers);
+        console.log(MeditationHistory);
     }
 
     componentDidMount() {
@@ -47,14 +49,8 @@ class MeditationHistory extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'My Timers',
-            headerRight: (
-                <Button
-                    buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
-                    icon={{ name: 'add-circle', style: { marginRight: 20, fontSize: 28 } }}
-                    onPress={() => { navigation.push('AddTimer') }}
-                />
-            ),
+            title: 'My History',
+
         };
     };
 
@@ -71,49 +67,29 @@ class MeditationHistory extends Component {
             <ScrollView style={styles.container}>
 
                 {
-                    this.state.timers.map((item, i) => (
+                    this.state.MeditationHistory.map((item, i) => (
                         <ListItem
                             key={i}
                             bottomDivider
-                            onPress={() => {
-                                this.props.navigation.navigate('RunTimer', {
-                                    timerkey: `${JSON.stringify(item.key)}`,
-                                    timerName: `${JSON.stringify(item.name)}`,
-                                });
-                            }}
+
                         >
                             <Avatar source={{uri: item.image}} />
                             <ListItem.Content>
                                 <ListItem.Title >{item.name}</ListItem.Title>
                             </ListItem.Content>
-                            <Icon.Button
-                                name="play"
-                                size={14}
-                                color="black"
-                                backgroundColor="white"
-                                onPress={() => {
-                                    this.props.navigation.navigate('RunTimer', {
-                                        timerkey: `${JSON.stringify(item.key)}`,
-                                        timerName: `${JSON.stringify(item.name)}`,
-                                    });
-                                }}
-                            >
+                            <ListItem.Content>
+                                <ListItem.Title >{item.totalTime}</ListItem.Title>
+                            </ListItem.Content>
+                            <ListItem.Content>
+                                <ListItem.Title >{item.medidatedAt}</ListItem.Title>
+                            </ListItem.Content>
+                            <ListItem.Content>
+                                <ListItem.Title >{item.userName}</ListItem.Title>
+                            </ListItem.Content>
 
-                            </Icon.Button>
-                            <Icon.Button
-                                name="edit"
-                                size={14}
-                                color="black"
-                                backgroundColor="white"
-                                onPress={() => {
-                                    this.props.navigation.navigate('TimerDetails', {
-                                        timerkey: `${JSON.stringify(item.key)}`,
-                                        timerName: `${JSON.stringify(item.name)}`,
-                                    });
-                                }}
-                            >
 
-                            </Icon.Button>
+
+
 
 
 

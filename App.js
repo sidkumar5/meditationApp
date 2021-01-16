@@ -11,7 +11,6 @@ import EditTimerScreen from "./components/EditTimerScreen";
 import RunTimerScreen from "./components/RunTimerScreen";
 import HomeScreen from "./components/HomeScreen";
 import uTimerScreen from "./components/uTimerScreen";
-import uTimerDetailScreen from "./components/uTimerDetailScreen";
 import MeditationHistoryScreen from "./components/MeditationHistory";
 
 const RootStack = createAppContainer(
@@ -26,7 +25,7 @@ const RootStack = createAppContainer(
       RunTimer: RunTimerScreen,
       Home: HomeScreen,
       uTimer: uTimerScreen,
-      uTimerDetails: uTimerDetailScreen,
+
         history: MeditationHistoryScreen,
 
     },
