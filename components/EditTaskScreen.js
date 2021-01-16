@@ -9,13 +9,13 @@ import moment from "moment"
 
 class EditTaskScreen extends Component {
     static navigationOptions = {
-        title: 'Edit Task',
+        title: 'Edit Action',
     };
 
     constructor(props) {
         super(props);
         const { navigation } = this.props;
-        this.ref = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks');
+        this.ref = firebase.firestore().collection('meditations').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks');
 
         this.state = {
             isLoading: true,
@@ -193,7 +193,7 @@ class EditTaskScreen extends Component {
         });
         const { navigation } = this.props;
         console.log("updating field ",this.state.taskName);
-        const updateRef = firebase.firestore().collection('timers').doc(this.state.key).collection('tasks').doc(JSON.parse(navigation.getParam('taskkey')));
+        const updateRef = firebase.firestore().collection('meditations').doc(this.state.key).collection('tasks').doc(JSON.parse(navigation.getParam('taskkey')));
         updateRef.set({
             taskName: this.state.taskName,
             timeSeconds: this.state.timeSeconds,
@@ -238,9 +238,6 @@ class EditTaskScreen extends Component {
                     />
                 </View>
                 <View>
-
-
-
 
                     {this._maybeRenderImage()}
                     {this._maybeRenderUploadingOverlay()}
@@ -324,10 +321,16 @@ const styles = StyleSheet.create({
         padding: 20
     },
     subContainer: {
-        flex: 1,
+        flex:1,
+        margin: 5,
         paddingBottom: 20,
         borderBottomWidth: 2,
         borderBottomColor: '#CCCCCC',
+        borderWidth: 2,
+        borderColor: '#000000',
+        borderRadius: 20 ,
+        textAlignVertical: 'auto',
+        alignItems: 'center'
     },
     activity: {
         position: 'absolute',
@@ -343,9 +346,11 @@ const styles = StyleSheet.create({
     },
 
     imageButton: {
-    marginTop: 10,
+        marginTop: 10,
         flexDirection: 'row' }
 })
+
+
 async function uploadImageAsync(uri) {
     // Why are we using XMLHttpRequest? See:
     // https://github.com/expo/expo/issues/2402#issuecomment-443726662

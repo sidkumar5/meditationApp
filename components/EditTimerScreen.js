@@ -22,7 +22,7 @@ class EditTimerScreen extends Component {
 
     componentDidMount() {
         const { navigation } = this.props;
-        const ref = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey')));
+        const ref = firebase.firestore().collection('meditations').doc(JSON.parse(navigation.getParam('timerkey')));
         ref.get().then((doc) => {
             if (doc.exists) {
                 const timer = doc.data();
@@ -148,7 +148,7 @@ class EditTimerScreen extends Component {
             isLoading: true,
         });
         const { navigation } = this.props;
-        const updateRef = firebase.firestore().collection('timers').doc(this.state.key);
+        const updateRef = firebase.firestore().collection('meditations').doc(this.state.key);
         updateRef.set({
             name: this.state.name,
             image: this.state.image,

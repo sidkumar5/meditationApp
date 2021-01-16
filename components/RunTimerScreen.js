@@ -159,10 +159,6 @@ class RunTimerScreen extends Component {
                 }
 
 
-
-
-
-
             }else {
                 if (this.state.sessionInProgress) {
                 eventDate = eventDate.subtract(1,"s")
@@ -178,7 +174,7 @@ class RunTimerScreen extends Component {
                     secs,
                     eventDate
                 })
-            }
+            } 
             }
         },1000)
 
