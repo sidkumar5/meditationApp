@@ -20,7 +20,8 @@ class EditTaskScreen extends Component {
         this.state = {
             isLoading: true,
             tasks: {},
-            key: ''
+            key: '',
+            image: '',
         };
     }
 
@@ -140,7 +141,7 @@ class EditTaskScreen extends Component {
             console.log(doc.id);
             console.log(JSON.parse(navigation.getParam('taskkey')));
             if (JSON.parse(navigation.getParam('taskkey')) == doc.id) {
-                console.log("Identified task");
+                console.log("Identified task",doc.data());
                 const task = doc.data();
                 this.setState({
                     key: JSON.parse(navigation.getParam('timerkey')),
@@ -150,6 +151,9 @@ class EditTaskScreen extends Component {
                     sequenceNumber: task.sequenceNumber,
                     image: task.image,
                 });
+                if (!task.image) {
+                    this.state.image='';
+                }
             }
             tasks.push({
                 key: doc.id,
@@ -197,7 +201,8 @@ class EditTaskScreen extends Component {
         updateRef.set({
             taskName: this.state.taskName,
             timeSeconds: this.state.timeSeconds,
-            sequenceNumber: this.state.sequenceNumber
+            sequenceNumber: this.state.sequenceNumber,
+            image: this.state.image,
         }).then((docRef) => {
             console.log("null ref");
             this.setState({
@@ -219,10 +224,10 @@ class EditTaskScreen extends Component {
 
 
     render() {
-        let { image } = this.state;
+        let {image} = this.state;
 
-        if(this.state.isLoading){
-            return(
+        if (this.state.isLoading) {
+            return (
                 <View style={styles.activity}>
                     <ActivityIndicator size="large" color="#0000ff"/>
                 </View>
@@ -231,86 +236,79 @@ class EditTaskScreen extends Component {
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
-                    <TextInput
-                        placeholder={'Name'}
-                        value={this.state.name}
-                        onChangeText={(text) => this.updateTextInput(text, 'name')}
+                    <TextInput textAlign={'center'}
+                               placeholder={"Sequence"}
+                               value={this.state.sequenceNumber}
+                               keyboardType={'numeric'}
+                               onChangeText={(text) => this.updateTextInput(text, 'sequenceNumber')}
                     />
                 </View>
-                <View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style={styles.subContainer}>
+                    <TextInput textAlign={'center'}
+                               placeholder={'Task'}
+                               value={this.state.taskName}
+                               onChangeText={(text) => this.updateTextInput(text, 'taskName')}
+                    />
+                </View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style={styles.subContainer}>
+                    <TextInput textAlign={'center'}
+                               placeholder={'Time'}
+                               value={this.state.timeSeconds}
+                               keyboardType={'numeric'}
+                               onChangeText={(text) => this.updateTextInput(text, 'timeSeconds')}
+                    />
+                </View>
+
+
+                <View style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+
 
                     {this._maybeRenderImage()}
                     {this._maybeRenderUploadingOverlay()}
 
-                    <StatusBar barStyle="default" />
+                    <StatusBar barStyle="default"/>
                 </View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+
 
 
                 <View style={styles.imageButton}>
-                    <View style={{flex:1 }} >
+                    <View style={{flex: 1}}>
                         <Button
                             onPress={this._pickImage}
                             title="Pick image"
                         />
                     </View>
 
-                    <View style={{flex:1 , marginLeft:10}} >
-                        <Button onPress={this._takePhoto} title="Take photo" />
+                    <View style={{flex: 1, marginLeft: 10}}>
+                        <Button onPress={this._takePhoto} title="Take photo"/>
                     </View>
 
 
                 </View>
-                <View style={{flex:1 , marginTop:10}} >
+                <View style={{flex: 1, marginTop: 10}}>
                     <Button
                         large
                         leftIcon={{name: 'update'}}
                         title='Update'
-                        onPress={() => this.updateTimerTask()} />
+                        onPress={() => this.updateTimerTask()}/>
                 </View>
             </ScrollView>
-        );
-
-        if(this.state.isLoading){
-            return(
-                <View style={styles.activity}>
-                    <ActivityIndicator size="large" color="#0000ff"/>
-                </View>
-            )
-        }
-        return (
-            <ScrollView style={styles.container}>
-                <View style={styles.subContainer}>
-                    <TextInput
-                        placeholder={'Sequence'}
-                        value={this.state.sequenceNumber}
-                        onChangeText={(text) => this.updateTextInput(text, 'sequenceNumber')}
-                        keyboardType={'numeric'}
-                    />
-                    <TextInput
-                        placeholder={'Task'}
-                        value={this.state.taskName}
-                        onChangeText={(text) => this.updateTextInput(text, 'taskName')}
-                    />
-                    <TextInput
-                        placeholder={'Time'}
-                        value={this.state.timeSeconds}
-                        onChangeText={(text) => this.updateTextInput(text, 'timeSeconds')}
-                        keyboardType={'numeric'}
-                    />
-
-                </View>
-
-                <View style={styles.button}>
-                    <Button
-                        large
-                        leftIcon={{name: 'update'}}
-                        title='Update'
-                        onPress={() => this.updateTimerTask()} />
-                </View>
-            </ScrollView>
-
         );
     }
+
+
 
 
 }
@@ -320,17 +318,19 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20
     },
-    subContainer: {
-        flex:1,
-        margin: 5,
-        paddingBottom: 20,
-        borderBottomWidth: 2,
-        borderBottomColor: '#CCCCCC',
-        borderWidth: 2,
-        borderColor: '#000000',
-        borderRadius: 20 ,
-        textAlignVertical: 'auto',
-        alignItems: 'center'
+        subContainer: {
+            flex:1,
+            margin: 5,
+            paddingTop: 10,
+            paddingBottom: 10,
+            borderBottomWidth: 2,
+            borderBottomColor: '#CCCCCC',
+            borderWidth: 2,
+            borderColor: '#000000',
+            borderRadius: 20 ,
+            textAlignVertical: 'auto',
+            alignItems: 'center'
+
     },
     activity: {
         position: 'absolute',
@@ -345,12 +345,11 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 
+
     imageButton: {
         marginTop: 10,
         flexDirection: 'row' }
 })
-
-
 async function uploadImageAsync(uri) {
     // Why are we using XMLHttpRequest? See:
     // https://github.com/expo/expo/issues/2402#issuecomment-443726662
