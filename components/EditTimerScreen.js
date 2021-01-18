@@ -7,7 +7,7 @@ import * as ImagePicker from "expo-image-picker";
 
 class EditTimerScreen extends Component {
     static navigationOptions = {
-        title: 'Edit Timer',
+        title: 'Edit Meditation',
     };
     constructor(props) {
         super(props);
