@@ -5,6 +5,8 @@ import {  ListItem, Text, Card, Button , Avatar} from 'react-native-elements';
 import {  Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from "../Firebase";
+import * as docRef from "timm";
+
 
 class MeditationHistory extends Component {
 
@@ -47,6 +49,7 @@ class MeditationHistory extends Component {
         this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
     }
 
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'My History',
@@ -81,7 +84,7 @@ class MeditationHistory extends Component {
                                 <ListItem.Title >{item.totalTime}</ListItem.Title>
                             </ListItem.Content>
                             <ListItem.Content>
-                                <ListItem.Title >{item.medidatedAt}</ListItem.Title>
+                                <ListItem >{item.medidatedAt}</ListItem>
                             </ListItem.Content>
                             <ListItem.Content>
                                 <ListItem.Title >{item.userName}</ListItem.Title>
