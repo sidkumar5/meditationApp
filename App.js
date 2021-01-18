@@ -25,7 +25,6 @@ const RootStack = createAppContainer(
       RunTimer: RunTimerScreen,
       Home: HomeScreen,
       uTimer: uTimerScreen,
-
         history: MeditationHistoryScreen,
 
     },
