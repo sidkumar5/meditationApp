@@ -8,7 +8,7 @@ import moment from "moment"
 
 class AddTaskScreen extends Component {
     static navigationOptions = {
-        title: 'Add Task',
+        title: 'Add Action',
     };
     constructor(props) {
         super(props);
@@ -158,11 +158,21 @@ class AddTaskScreen extends Component {
                         value={this.state.sequenceNumber}
                         onChangeText={(text) => this.updateTextInput(text, 'sequenceNumber')}
                     />
+                </View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style={styles.subContainer}>
                     <TextInput
                         placeholder={'Task'}
                         value={this.state.taskName}
                         onChangeText={(text) => this.updateTextInput(text, 'taskName')}
                     />
+                </View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style={styles.subContainer}>
                     <TextInput
                         placeholder={'Time in seconds'}
                         value={this.state.timeSeconds}
@@ -171,13 +181,20 @@ class AddTaskScreen extends Component {
 
                 </View>
 
-                <View >
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+
+                <View style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
 
                     {this._maybeRenderImage()}
                     {this._maybeRenderUploadingOverlay()}
 
                     <StatusBar barStyle="default" />
                 </View>
+
+                <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
 
 
 
@@ -213,11 +230,18 @@ const styles = StyleSheet.create({
         padding: 20
     },
     subContainer: {
-        flex: 1,
-        marginBottom: 20,
-        padding: 5,
+        flex:1,
+        margin: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
         borderBottomWidth: 2,
         borderBottomColor: '#CCCCCC',
+        borderWidth: 2,
+        borderColor: '#000000',
+        borderRadius: 20 ,
+        textAlignVertical: 'auto',
+        alignItems: 'center'
+
     },
     activity: {
         position: 'absolute',
