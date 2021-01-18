@@ -48,11 +48,11 @@ class HomeScreen extends Component {
           }}
         />
         <Button
-            style={styles.button}
-            title="Past Meditations"
-            onPress={() => {
-              this.props.navigation.navigate("history");
-            }}
+          style={styles.button}
+          title="Past Meditations"
+          onPress={() => {
+            this.props.navigation.navigate("history");
+          }}
         />
       </View>
     );
@@ -60,15 +60,15 @@ class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: { padding: 20,},
+  button: { padding: 20, flex: 1, height: 1000 },
   detailButton: {
     marginTop: 10,
     flexDirection: "row",
   },
   container: {
     flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'space-around',
+    flexDirection: "column",
+    //justifyContent: "space-around",
     //justifyContent: "space-between",
   },
 });
