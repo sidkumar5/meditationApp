@@ -13,7 +13,7 @@ class AddTaskScreen extends Component {
     constructor(props) {
         super(props);
         const { navigation } = this.props;
-        this.ref = firebase.firestore().collection('timers').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks');
+        this.ref = firebase.firestore().collection('meditations').doc(JSON.parse(navigation.getParam('timerkey'))).collection('tasks');
         this.state = {
             taskName: '',
             timeSeconds: '',
