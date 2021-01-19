@@ -174,7 +174,10 @@ class AddTimerScreen extends Component {
                         onChangeText={(text) => this.updateTextInput(text, 'name')}
                     />
                 </View>
-                <View >
+                <View style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
 
 
 

@@ -46,7 +46,7 @@ class TimerScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'My Timers',
+            title: 'My Meditations',
             headerRight: (
                 <Button
                     buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
