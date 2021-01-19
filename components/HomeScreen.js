@@ -60,7 +60,7 @@ class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: { padding: 20 },
+  button: { padding: 20, flex: 1, height: 1000 },
   detailButton: {
     marginTop: 10,
     flexDirection: "row",
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-around",
+    //justifyContent: "space-around",
     //justifyContent: "space-between",
   },
 });
