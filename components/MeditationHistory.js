@@ -5,7 +5,6 @@ import {  ListItem, Text, Card, Button , Avatar} from 'react-native-elements';
 import {  Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from "../Firebase";
-import * as docRef from "timm";
 
 
 class MeditationHistory extends Component {
