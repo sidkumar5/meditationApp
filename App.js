@@ -12,6 +12,7 @@ import RunTimerScreen from "./components/RunTimerScreen";
 import HomeScreen from "./components/HomeScreen";
 import uTimerScreen from "./components/uTimerScreen";
 import MeditationHistoryScreen from "./components/MeditationHistory";
+//hi
 
 const RootStack = createAppContainer(
   createStackNavigator(
@@ -25,8 +26,7 @@ const RootStack = createAppContainer(
       RunTimer: RunTimerScreen,
       Home: HomeScreen,
       uTimer: uTimerScreen,
-        history: MeditationHistoryScreen,
-
+      history: MeditationHistoryScreen,
     },
     {
       initialRouteName: "Home",
